@@ -1,38 +1,31 @@
-Usage:
+### Usage:
 
 ```
-poetry run chaan <rpcuser> <rpcpassword> <rpcconnect> <gossip_file> [<skip_filtering> <start_line>]
+poetry run chaan <rpcuser> <rpcpassword> <rpcconnect> <gossip_file>
 ```
 
 where:
 
 - `rpc{user, password, connect}` match your `bitcoind` connection parameters
 - `gossip_file` matches one of the datasets [provided by lntopo](https://github.com/lnresearch/topology#available-datasets)
-- `skip_filtering` (optional) refers to whether the parsing of the `gossip_file` must be skipped. This is only possible if the parsing was already performed before
-- `start_line` (optional) refers to the starting line in the parsing tmp file (created after parsing the `gossip_file`) from where the second half of the data parsing will start from
 
 
-## What is `start_line` purpose?
-`start_line` is useful in case the second half of the parsing (involving querying `bitcoind`) crashes for some reason, like the request timing out due to high load on your node. In that case, you can re-start the parsing where it was left by the last (unfinished) run.
+### Output format:
 
-To do so, we can just check what was the last line written by the `chaan`:
+The generated output file (`chaan-gossip-DATE.txt`) has the following format:
 
 ```
-cat chann-XXX.txt | wc -l
+n:scid=txid:out
 ```
 
-And its content:
+Where:
 
-```
-tail -1 chann-XXX.txt
-> N1
-```
+- `n` is the line number within the file
+- `scid` is the short channel id identifying this channel announcement
+- `txid` is the transaction id of the funding transaction
+- `out` is the index of the funding output
 
-Now we can compare the line number of that `scid` in the temporary file, both lines must match (`N1 == N2`)
 
-```
-cat chaan-XXX-tmp.txt | grep scid
-> N2:scid
-```
+## Installation
 
-If so, `N1` is out `start_line`
+This currently requires lntopo to be manually installed from the [repo](https://github.com/lnresearch/topology) given a [patch regarding net addresses](https://github.com/lnresearch/topology/commit/391e3ea8df7d17682e281c08d31c6e3980b228fd) is missing from PyPi. 
