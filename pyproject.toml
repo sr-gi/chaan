@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "chaan"
+version = "0.0.1"
+description = ""
+authors = ["Sergi Delgado <sergi.delgado.s@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+python-bitcoinrpc = "1.0"
+tqdm = "4.50.2"
+lntopo = "0.1.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+chaan = 'chaan.run:main'
